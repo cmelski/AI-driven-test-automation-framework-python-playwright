@@ -4,8 +4,8 @@ from playwright.sync_api import expect
 
 
 @pytest.mark.login
-def test_valid_login(page_instance, valid_login_credentials, logger_utility):
-    login_page = LoginPage(page_instance)
+def test_valid_login(page_instance_login, valid_login_credentials, logger_utility):
+    login_page = LoginPage(page_instance_login)
 
     # validate user is on Login Page
     expect(login_page.login_button).to_be_visible()
@@ -27,9 +27,9 @@ def test_valid_login(page_instance, valid_login_credentials, logger_utility):
     indirect=True,
 )
 @pytest.mark.invalid_login
-def test_invalid_login(page_instance, invalid_login_credentials, logger_utility):
+def test_invalid_login(page_instance_login, invalid_login_credentials, logger_utility):
     username, password = invalid_login_credentials
-    login_page = LoginPage(page_instance)
+    login_page = LoginPage(page_instance_login)
 
     # validate user is on Login Page
     expect(login_page.login_button).to_be_visible()
