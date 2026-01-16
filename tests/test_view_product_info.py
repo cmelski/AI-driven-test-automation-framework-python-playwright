@@ -1,11 +1,8 @@
 import json
-import time
-
 import pytest
 from playwright.sync_api import expect
 from page_objects.shop import ShopPage
 import re
-
 
 @pytest.fixture()
 def get_products():
@@ -17,7 +14,13 @@ def get_products():
 @pytest.mark.smoke
 @pytest.mark.view_product_info
 def test_view_product_info_page(page_instance, logger_utility, get_products):
-    logger_utility.info(get_products)
+    try:
+        assert len(get_products) > 0
+        logger_utility.info('Products data file contains at least 1 product')
+    except AssertionError:
+        logger_utility.error('Products data file empty. Test Failed')
+        raise
+
     shop_page = ShopPage(page_instance)
     logger_utility.info(f'Shop URL: {shop_page.url}')
     logger_utility.info(f'Successfully bypassed Login screen for this test')
@@ -26,14 +29,21 @@ def test_view_product_info_page(page_instance, logger_utility, get_products):
     # expect(shop_page.url).to_contain_text('inventory')
     # do this instead (3 ways):
     # simplest(no waiting)
-    assert "inventory.html" in shop_page.page.url
-    logger_utility.info('"inventory.html" exists in the url')
-    # exact url match (less flexible)
-    expect(shop_page.page).to_have_url("https://www.saucedemo.com/inventory.html")
-    logger_utility.info('Page correctly has url: https://www.saucedemo.com/inventory.html')
+    # assert "inventory.html" in shop_page.page.url
+    # logger_utility.info('"inventory.html" exists in the url')
+    # # exact url match (less flexible)
+    # expect(shop_page.page).to_have_url("https://www.saucedemo.com/inventory.html")
+    # logger_utility.info('Page correctly has url: https://www.saucedemo.com/inventory.html')
     # more flexible (reg ex)
-    expect(shop_page.page).to_have_url(re.compile(r"/inventory\.html$"))
-    logger_utility.info('URL contains "inventory"')
+    url_string_to_match = 'inventory'
+    try:
+
+        regex_pattern = re.compile(rf"/{re.escape(url_string_to_match)}\.html$")
+        expect(shop_page.page).to_have_url(regex_pattern)
+        logger_utility.info(f'URL contains "{url_string_to_match}"')
+    except AssertionError:
+        logger_utility.error(f'URL does not contain "{url_string_to_match}". Test Failed')
+        raise
 
     # assert there are items to select and fail the test and log the error to test_failures.log
     try:
