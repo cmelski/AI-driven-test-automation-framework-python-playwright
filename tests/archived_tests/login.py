@@ -3,7 +3,7 @@ from page_objects.login import LoginPage
 from playwright.sync_api import expect
 
 
-@pytest.mark.feature("AUTH_LOGIN")
+
 @pytest.mark.login
 def test_valid_login(page_instance_login, valid_login_credentials, logger_utility):
     login_page = LoginPage(page_instance_login)

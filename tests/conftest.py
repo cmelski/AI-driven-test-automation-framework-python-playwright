@@ -66,7 +66,6 @@ def invalid_login_credentials(request, valid_login_credentials):
     raise ValueError(f"Unknown param: {request.param}")
 
 
-@pytest.fixture(scope="session")
 def logger_utility():
     # set up logging
     logger = logging.getLogger(__name__)
@@ -111,7 +110,7 @@ def auth_state_file(env, valid_login_credentials):
 # this fixture will use an auth_state_file returned by auth_state_file fixture
 # to allow bypass of the login screen
 @pytest.fixture(scope="function")
-def page_instance(request, logger_utility, auth_state_file):
+def page_instance(request, auth_state_file):
     browser_name = request.config.getoption("browser_name")
 
     with sync_playwright() as p:
@@ -135,7 +134,7 @@ def page_instance(request, logger_utility, auth_state_file):
             file_path = Path(__file__).parent.parent / "auth_state_test.json"
             if os.path.exists(file_path):
                 os.remove(file_path)
-                logger_utility.info("Deleted auth_state_test.json.")
+                logger_utility().info("Deleted auth_state_test.json.")
 
 
 # main tests fixture that yields page object

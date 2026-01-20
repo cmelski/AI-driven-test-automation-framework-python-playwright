@@ -1,0 +1,23 @@
+feature: CART_REMOVE_ITEM
+scenario: Remove an item from the shopping cart
+steps:
+  - action: navigate
+    parameters: 
+      url: "https://example-ecommerce.com"
+  - action: click
+    parameters:
+      selector: "#cart-icon"
+  - action: waitForSelector
+    parameters:
+      selector: ".cart-item"
+  - action: click
+    parameters:
+      selector: ".cart-item .remove-button"
+  - action: waitForSelector
+    parameters:
+      selector: ".cart-empty-message"
+assertions:
+  - action: expect
+    parameters:
+      selector: ".cart-empty-message"
+      toBeVisible: true

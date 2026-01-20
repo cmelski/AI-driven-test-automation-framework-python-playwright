@@ -1,0 +1,14 @@
+feature: BUILD_CART
+scenario: Add backpack to cart
+steps:
+  - action: login
+    parameters:
+      user: $VALID_USERNAME
+      password: $VALID_PASSWORD
+  - action: add_to_cart
+    parameters:
+      product_name: ${PRODUCT_1}
+  - action: open_cart
+assertions:
+  - cart_contains:
+      product_name: ${PRODUCT_1}

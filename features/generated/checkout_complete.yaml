@@ -1,0 +1,62 @@
+Here's a Playwright test scenario in YAML format for the feature "CHECKOUT_COMPLETE" on an e-commerce site:
+
+```yaml
+feature: CHECKOUT_COMPLETE
+scenario: Complete the checkout process successfully
+steps:
+  - action: navigate
+    parameters: 
+      url: "https://example-ecommerce.com"
+  - action: click
+    parameters:
+      selector: "button#login"
+  - action: fill
+    parameters:
+      selector: "input#username"
+      text: "testuser"
+  - action: fill
+    parameters:
+      selector: "input#password"
+      text: "securepassword"
+  - action: click
+    parameters:
+      selector: "button#submit-login"
+  - action: click
+    parameters:
+      selector: "a#product-page"
+  - action: click
+    parameters:
+      selector: "button#add-to-cart"
+  - action: click
+    parameters:
+      selector: "a#view-cart"
+  - action: click
+    parameters:
+      selector: "button#proceed-to-checkout"
+  - action: fill
+    parameters:
+      selector: "input#shipping-address"
+      text: "123 Main St, Anytown, USA"
+  - action: fill
+    parameters:
+      selector: "input#credit-card-number"
+      text: "4111111111111111"
+  - action: fill
+    parameters:
+      selector: "input#expiration-date"
+      text: "12/25"
+  - action: fill
+    parameters:
+      selector: "input#cvv"
+      text: "123"
+  - action: click
+    parameters:
+      selector: "button#confirm-purchase"
+assertions:
+  - action: expect
+    parameters:
+      selector: "h1#order-confirmation"
+      text: "Thank you for your purchase!"
+```
+
+This YAML script outlines a test scenario where a user logs into an e-commerce site, adds a product to the cart, proceeds to checkout, enters shipping and payment information, and completes the purchase. The assertion at the end checks for an order confirmation message.

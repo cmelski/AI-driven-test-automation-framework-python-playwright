@@ -1,6 +1,7 @@
 from page_objects.shop import ShopPage
 import re
 from playwright.sync_api import expect
+from tests.conftest import logger_utility
 
 
 def validate_shop_page(page_instance, logger_utility, get_products):
@@ -35,3 +36,33 @@ def validate_shop_page(page_instance, logger_utility, get_products):
     logger_utility.info(f'Shop Page Inventory Count: {inventory_count}')
 
     return shop_page
+
+
+def assert_cart_contains(page, product_name):
+    cart_items = page.locator(".cart_item").filter(has_text=product_name)
+    expect(cart_items).to_have_count(1)
+    logger_utility().info(f'Cart correctly has 1 item: {product_name}')
+
+
+def assert_shop_page_loaded_after_login(page, page_title):
+    expect(page.locator('.title')).to_have_text(page_title)
+
+
+def assert_invalid_login_error(page, error):
+    expect(page.login_error).to_contain_text(error)
+
+
+def execute_product_detail_assertion(page, item):
+    selector = item["selector"]
+    logger_utility().info(f'Selector: {selector}')
+    locator = page.locator(selector)
+    logger_utility().info(f'Locator: {locator}')
+
+    if "toHaveText" in item:
+        expect(locator).to_have_text(item["toHaveText"])
+
+    if "toBeVisible" in item and item["toBeVisible"] is True:
+        expect(locator).to_be_visible()
+
+
+

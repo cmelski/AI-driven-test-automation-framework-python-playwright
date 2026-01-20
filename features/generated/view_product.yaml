@@ -1,0 +1,30 @@
+feature: VIEW_PRODUCT
+scenario: View product details
+steps:
+  - action: view_product
+    parameters:
+      product_name: ${PRODUCT_1}
+  - action: waitForSelector
+    parameters:
+      selector: "div.inventory_details"
+assertions:
+  - product_details:
+      - name: product_name
+        selector: "div[data-test='inventory-item-name']"
+        toHaveText: ${PRODUCT_1}
+
+      - name: product_description
+        selector: "div[data-test='inventory-item-desc']"
+        toBeVisible: true
+
+      - name: product_price
+        selector: "div[data-test='inventory-item-price']"
+        toBeVisible: true
+
+      - name: add_to_cart_button
+        selector: "#add-to-cart"
+        toBeVisible: true
+
+      - name: back_to_shop_button
+        selector: "#back-to-products"
+        toBeVisible: true

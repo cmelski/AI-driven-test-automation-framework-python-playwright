@@ -3,7 +3,7 @@ import re
 
 import pytest
 from playwright.sync_api import expect
-from tests.helpers.common_test_setup_assertions import validate_shop_page
+from tests.helpers.test_assertions import validate_shop_page
 
 
 @pytest.fixture()
@@ -13,7 +13,7 @@ def get_products():
         return products
 
 
-@pytest.mark.feature("BUILD_CART")
+
 @pytest.mark.build_shopping_cart
 def test_build_shopping_cart(page_instance, logger_utility, get_products):
     shop_page = validate_shop_page(page_instance, logger_utility, get_products)
