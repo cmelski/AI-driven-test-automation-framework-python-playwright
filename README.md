@@ -42,9 +42,10 @@ test_run_logs/             # test logs including errors/exceptions
 tests/                     # main test file picked up by pytest and conftest.py setup file
 ├── helpers/               # Assertion helpers (Playwright expect lives here) 
 tools/
-├── feature_coverage.py
-├── check_feature_coverage.py
-│   └── generate_feature_dashboard.py
+├── ai_generate_specs.py   # scripts to pass prompt to LLM to generate feature specs
+├── feature_coverage.py    # script to compile features to be tested from features.yaml
+├── check_feature_coverage.py # compare features defined with test output (tests marked with feature) to find gaps in test coverage
+├── generate_feature_dashboard.py # generated html report to highlight testing gaps
 ├── spec_runner.py         # executes steps from feature specs
 ├── utils.py               # functions for replacing placeholders in spec files with json data/env variables
             
