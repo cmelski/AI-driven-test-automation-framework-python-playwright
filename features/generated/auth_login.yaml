@@ -1,10 +1,22 @@
 feature: AUTH_LOGIN
 scenario: User can successfully log in to the e-commerce site
-steps:
-  - action: login
-    parameters:
-      user: $VALID_USERNAME
-      password: $VALID_PASSWORD
-assertions:
-  - shop_page_loaded:
-      page_title: Products
+
+flow:
+  - assertions:
+      - login_page_loaded:
+          - name: url
+            url_text: $BASE_URL
+  - steps:
+      - action: login
+        parameters:
+          user_name: $VALID_USERNAME
+          password: $VALID_PASSWORD
+
+    assertions:
+      - shop_page_loaded:
+          - name: page_title
+            toHaveText: 'Products'
+
+          - name: inventory_count
+            notToHaveCount: 0
+

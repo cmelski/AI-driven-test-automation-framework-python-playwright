@@ -3,6 +3,7 @@ scenario: View product details
 steps:
   - action: view_product
     parameters:
+      product_inventory_selector: '.inventory_item'
       product_name: ${PRODUCT_1}
   - action: waitForSelector
     parameters:

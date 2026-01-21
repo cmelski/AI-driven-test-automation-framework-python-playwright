@@ -7,3 +7,13 @@ class CartPage:
         self.checkout_button = self.page.locator('#checkout')
         self.continue_shopping_button = self.page.locator('#continue-shopping')
 
+    def remove_product_from_cart(self, product):
+        items = self.cart_items
+        items_count = items.count()
+
+        for i in range(items_count):
+            item = items.nth(i)
+            product_name = item.locator('.inventory_item_name').inner_text().strip()
+            if product_name == product:
+                remove_button = item.locator('button')
+                remove_button.click()

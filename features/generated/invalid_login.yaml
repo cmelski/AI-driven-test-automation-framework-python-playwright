@@ -1,24 +1,40 @@
 feature: INVALID_LOGIN
 scenario: User cannot log in with invalid credentials
-steps:
-  - action: login
-    parameters:
-      user: $VALID_USERNAME
-      password: $VALID_PASSWORD
 
-# List multiple invalid credential sets
-test_data:
-  - description: Wrong username, correct password
-    user: wrong_user
-    password: $VALID_PASSWORD
-    expected_error: "Epic sadface"
+flow:
 
-  - description: Correct username, wrong password
-    user: $VALID_USERNAME
-    password: wrong_password
-    expected_error: "Epic sadface"
+  - steps:
+      - action: login
+        parameters:
+          user_name: $VALID_USERNAME
+          password: bad_password
 
-  - description: Empty username and password
-    user: ""
-    password: ""
-    expected_error: ""
+  - assertions:
+      - login_error:
+          - name: error_message
+            toHaveText: Epic sadface
+            toBeVisible: true
+
+  - steps:
+      - action: login
+        parameters:
+          user_name: bad_username
+          password: $VALID_PASSWORD
+
+  - assertions:
+      - login_error:
+          - name: error_message
+            toHaveText: Epic sadface
+            toBeVisible: true
+
+  - steps:
+      - action: login
+        parameters:
+          user_name: ''
+          password: ''
+
+  - assertions:
+      - login_error:
+          - name: error_message
+            toHaveText: Epic sadface
+            toBeVisible: true

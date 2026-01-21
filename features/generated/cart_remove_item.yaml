@@ -1,23 +1,39 @@
 feature: CART_REMOVE_ITEM
-scenario: Remove an item from the shopping cart
-steps:
-  - action: navigate
-    parameters: 
-      url: "https://example-ecommerce.com"
-  - action: click
-    parameters:
-      selector: "#cart-icon"
-  - action: waitForSelector
-    parameters:
-      selector: ".cart-item"
-  - action: click
-    parameters:
-      selector: ".cart-item .remove-button"
-  - action: waitForSelector
-    parameters:
-      selector: ".cart-empty-message"
-assertions:
-  - action: expect
-    parameters:
-      selector: ".cart-empty-message"
-      toBeVisible: true
+scenario: Remove product from cart and verify cart is empty
+
+flow:
+  - steps:
+      - action: add_to_cart
+        parameters:
+          product_name: ${PRODUCT_1}
+          product_inventory_selector: '.inventory_item'
+          inventory_item_name_selector: '.inventory_item_name'
+          add_to_cart_button_name: 'Add to cart'
+
+  - assertions:
+      - cart_badge_icon:
+          - name: cart_badge
+            selector: ".shopping_cart_badge"
+            toHaveCount: 1
+
+  - steps:
+      - action: open_cart
+        parameters:
+          cart_link_selector: '.shopping_cart_link'
+
+  - assertions:
+      - cart_page:
+          - name: cart_item
+            selector: ".cart_item"
+            toHaveText: ${PRODUCT_1}
+
+  - steps:
+      - action: remove_product_from_cart
+        parameters:
+          product_name: ${PRODUCT_1}
+
+  - assertions:
+      - cart_details_after_removing_product:
+          - name: cart_badge
+            selector: ".shopping_cart_badge"
+            toHaveCount: 0

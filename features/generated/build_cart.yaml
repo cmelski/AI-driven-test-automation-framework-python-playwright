@@ -1,14 +1,17 @@
 feature: BUILD_CART
-scenario: Add backpack to cart
+scenario: Add product to cart
 steps:
-  - action: login
-    parameters:
-      user: $VALID_USERNAME
-      password: $VALID_PASSWORD
   - action: add_to_cart
     parameters:
       product_name: ${PRODUCT_1}
+      product_inventory_selector: '.inventory_item'
+      inventory_item_name_selector: '.inventory_item_name'
+      add_to_cart_button_name: 'Add to cart'
   - action: open_cart
+    parameters:
+      cart_link_selector: '.shopping_cart_link'
 assertions:
   - cart_contains:
-      product_name: ${PRODUCT_1}
+      - name: cart
+        selector: ".cart_item"
+        toHaveText: ${PRODUCT_1}
