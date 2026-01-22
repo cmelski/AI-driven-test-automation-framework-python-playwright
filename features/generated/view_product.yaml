@@ -1,31 +1,37 @@
 feature: VIEW_PRODUCT
 scenario: View product details
-steps:
-  - action: view_product
-    parameters:
-      product_inventory_selector: '.inventory_item'
-      product_name: ${PRODUCT_1}
-  - action: waitForSelector
-    parameters:
-      selector: "div.inventory_details"
-assertions:
-  - product_details:
-      - name: product_name
-        selector: "div[data-test='inventory-item-name']"
-        toHaveText: ${PRODUCT_1}
 
-      - name: product_description
-        selector: "div[data-test='inventory-item-desc']"
-        toBeVisible: true
+flow:
+  - steps:
+      - action: capture_product_details
+        parameters:
+          product_name: ${PRODUCT_1}
+          save_as: selected_product
 
-      - name: product_price
-        selector: "div[data-test='inventory-item-price']"
-        toBeVisible: true
+      - action: open_product
+        parameters:
+          product_name: ${PRODUCT_1}
 
-      - name: add_to_cart_button
-        selector: "#add-to-cart"
-        toBeVisible: true
+  - assertions:
+      - product_page_loaded:
+          - name: product_page_loaded
+            waitForSelector: waitForSelector
 
-      - name: back_to_shop_button
-        selector: "#back-to-products"
-        toBeVisible: true
+      - product_details:
+          - name: product_name
+            toHaveText: ${PRODUCT_1}
+
+          - name: product_description
+            toBeVisible: true
+
+          - name: product_price
+            toBeVisible: true
+
+          - name: add_to_cart_button
+            toBeVisible: true
+
+          - name: back_to_shop_button
+            toBeVisible: true
+
+      - product_details_match:
+          context_key: selected_product

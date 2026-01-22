@@ -5,26 +5,20 @@ flow:
   - steps:
       - action: add_to_cart
         parameters:
-          product_name: ${PRODUCT_1}
-          product_inventory_selector: '.inventory_item'
-          inventory_item_name_selector: '.inventory_item_name'
-          add_to_cart_button_name: 'Add to cart'
+          products:
+            - ${PRODUCT_1}
 
   - assertions:
       - cart_badge_icon:
           - name: cart_badge
-            selector: ".shopping_cart_badge"
             toHaveCount: 1
 
   - steps:
       - action: open_cart
-        parameters:
-          cart_link_selector: '.shopping_cart_link'
 
   - assertions:
       - cart_page:
           - name: cart_item
-            selector: ".cart_item"
             toHaveText: ${PRODUCT_1}
 
   - steps:
@@ -35,5 +29,4 @@ flow:
   - assertions:
       - cart_details_after_removing_product:
           - name: cart_badge
-            selector: ".shopping_cart_badge"
             toHaveCount: 0

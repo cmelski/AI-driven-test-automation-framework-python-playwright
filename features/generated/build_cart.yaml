@@ -1,17 +1,15 @@
 feature: BUILD_CART
-scenario: Add product to cart
+scenario: Add products to cart
 steps:
   - action: add_to_cart
     parameters:
-      product_name: ${PRODUCT_1}
-      product_inventory_selector: '.inventory_item'
-      inventory_item_name_selector: '.inventory_item_name'
-      add_to_cart_button_name: 'Add to cart'
+      products:
+      - ${PRODUCT_1}
+      - ${PRODUCT_2}
   - action: open_cart
-    parameters:
-      cart_link_selector: '.shopping_cart_link'
 assertions:
   - cart_contains:
-      - name: cart
-        selector: ".cart_item"
-        toHaveText: ${PRODUCT_1}
+      - name: cart_items
+        product_names:
+        - ${PRODUCT_1}
+        - ${PRODUCT_2}
